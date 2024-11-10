@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15       # Usa la última versión estable de PostgreSQL
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: myuser   # Usuario para PostgreSQL
+      POSTGRES_PASSWORD: mypassword # Contraseña para PostgreSQL
+      POSTGRES_DB: mydatabase # Base de datos a crear
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Persistencia de datos
+    ports:
+      - "5432:5432"           # Mapea el puerto 5432 al host
+  redis:
+    image: redis:7            # Usa la última versión estable de Redis
+    container_name: redis_container
+    ports:
+      - "6379:6379"           # Mapea el puerto 6379 al host
+    volumes:
+      - redisdata:/data       # Persistencia de datos para Redis
+volumes:
+  pgdata:
+  redisdata:
