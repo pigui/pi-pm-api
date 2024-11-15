@@ -13,8 +13,13 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "strictNullChecks": false,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@api/shared/util/hashing": ["libs/shared/utils/hashing/src/index.ts"],
+      "@api/shared/util/prisma": ["libs/shared/utils/prisma/src/index.ts"],
+      "@api/users": ["libs/api/users/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

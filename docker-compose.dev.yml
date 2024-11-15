@@ -1,23 +1,42 @@
 version: '3.8'
 services:
-  postgres:
-    image: postgres:15       # Usa la última versión estable de PostgreSQL
-    container_name: postgres_container
+  api:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    command: npm run start:api
     environment:
-      POSTGRES_USER: myuser   # Usuario para PostgreSQL
-      POSTGRES_PASSWORD: mypassword # Contraseña para PostgreSQL
-      POSTGRES_DB: mydatabase # Base de datos a crear
-    volumes:
-      - pgdata:/var/lib/postgresql/data # Persistencia de datos
+      DATABASE_USER: pm  # Usuario para PostgreSQL
+      DATABASE_PASSWORD: pm # Contraseña para PostgreSQL
+      DATABASE_DB: pmdb # Base de datos a crear   
+      DATABASE_HOST: postgres
     ports:
-      - "5432:5432"           # Mapea el puerto 5432 al host
+      - "3000:3000"
+    volumes:
+      - ./apps/api:/usr/src/app/apps/api
+      - ./package.json:/usr/src/app/package.json
+      - ./libs:/usr/src/app/libs
+    depends_on:
+      - postgres
+      - redis
+  postgres:
+    image: postgres:latest  # Usa la última versión estable de PostgreSQL
+    restart: always
+    environment:
+      POSTGRES_USER: pm  # Usuario para PostgreSQL
+      POSTGRES_PASSWORD: pm # Contraseña para PostgreSQL
+      POSTGRES_DB: pmdb # Base de datos a crear
+    ports:
+      - "5432:5432"          # Mapea el puerto 5432 al host
   redis:
-    image: redis:7            # Usa la última versión estable de Redis
-    container_name: redis_container
+    image: redis:latest      # Usa la última versión estable de Redis
+    restart: always
     ports:
-      - "6379:6379"           # Mapea el puerto 6379 al host
-    volumes:
-      - redisdata:/data       # Persistencia de datos para Redis
-volumes:
-  pgdata:
-  redisdata:
+      - "6379:6379"          # Mapea el puerto 6379 al host
+  redisinsight:
+    image: redis/redisinsight:latest
+    ports:
+      - "5540:5540"
+    depends_on:
+      - redis
