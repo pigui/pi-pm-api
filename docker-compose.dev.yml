@@ -7,10 +7,9 @@ services:
       dockerfile: ./Dockerfile.dev
     command: npm run start:api
     environment:
-      DATABASE_USER: pm  # Usuario para PostgreSQL
-      DATABASE_PASSWORD: pm # Contraseña para PostgreSQL
-      DATABASE_DB: pmdb # Base de datos a crear   
-      DATABASE_HOST: postgres
+      DATABASE_URL: postgresql://pm:pm@db:5432/pmdb?schema=public
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     ports:
       - "3000:3000"
     volumes:
@@ -18,17 +17,7 @@ services:
       - ./package.json:/usr/src/app/package.json
       - ./libs:/usr/src/app/libs
     depends_on:
-      - postgres
-      - redis
-  postgres:
-    image: postgres:latest  # Usa la última versión estable de PostgreSQL
-    restart: always
-    environment:
-      POSTGRES_USER: pm  # Usuario para PostgreSQL
-      POSTGRES_PASSWORD: pm # Contraseña para PostgreSQL
-      POSTGRES_DB: pmdb # Base de datos a crear
-    ports:
-      - "5432:5432"          # Mapea el puerto 5432 al host
+      - redis         # Mapea el puerto 5432 al host
   redis:
     image: redis:latest      # Usa la última versión estable de Redis
     restart: always

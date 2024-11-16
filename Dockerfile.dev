@@ -14,6 +14,7 @@ COPY . .
 
 RUN npm cache clean --force && rm -rf node_modules && npm install
 RUN npm run prisma:generate
+RUN npm run prisma:migrate
 
 # Start the server using the production build
 CMD [ "npm", "start" ]

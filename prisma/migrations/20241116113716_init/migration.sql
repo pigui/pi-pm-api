@@ -1,14 +1,12 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
+    "id" TEXT NOT NULL PRIMARY KEY,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateIndex

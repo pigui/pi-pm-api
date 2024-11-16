@@ -5,23 +5,28 @@ import { UserFactory } from './factories/user.factory';
 import { UserRepository } from './ports/user.repository';
 import {
   concatMap,
+  firstValueFrom,
   iif,
   lastValueFrom,
   Observable,
   of,
   throwError,
 } from 'rxjs';
-import { ConflictException } from '@nestjs/common';
+import { ConflictException, Logger } from '@nestjs/common';
 
 @CommandHandler(CreateUserWithPasswordCommand)
 export class CreateUserWithPasswordCommandHandler
   implements ICommandHandler<CreateUserWithPasswordCommand, User>
 {
+  private readonly logger = new Logger(
+    CreateUserWithPasswordCommandHandler.name
+  );
   constructor(
     private readonly userFactory: UserFactory,
     private readonly userRepository: UserRepository
   ) {}
   execute(command: CreateUserWithPasswordCommand): Promise<User> {
+    this.logger.log(this.execute.name);
     const newUser: User = this.userFactory.create(
       command.email,
       command.firstName,
@@ -29,17 +34,10 @@ export class CreateUserWithPasswordCommandHandler
       new Date(),
       new Date()
     );
-    const user$: Observable<User> = this.userRepository
-      .createWithPassword(newUser, command.password)
-      .pipe(
-        concatMap((user: User) =>
-          iif(
-            () => !user,
-            of(user),
-            throwError(() => new ConflictException())
-          )
-        )
-      );
+    const user$: Observable<User> = this.userRepository.createWithPassword(
+      newUser,
+      command.password
+    );
     return lastValueFrom(user$);
   }
 }
