@@ -14,13 +14,13 @@ import { Logger, NotFoundException } from '@nestjs/common';
 
 @QueryHandler(FindUserByEmailQuery)
 export class FindUserByEmailQueryHandler
-  implements IQueryHandler<FindUserByEmailQuery, User>
+  implements IQueryHandler<FindUserByEmailQuery, User | null>
 {
   private readonly logger = new Logger(FindUserByEmailQueryHandler.name);
   constructor(private readonly userRepository: UserRepository) {}
-  execute(query: FindUserByEmailQuery): Promise<User> {
+  execute(query: FindUserByEmailQuery): Promise<User | null> {
     this.logger.log(this.execute.name);
-    const user$: Observable<User> = this.userRepository
+    const user$: Observable<User | null> = this.userRepository
       .findByEmail(query.email)
       .pipe(
         concatMap((user) =>
