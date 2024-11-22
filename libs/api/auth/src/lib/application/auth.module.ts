@@ -18,8 +18,9 @@ import { RegisterWithPasswordSuccessEventHandler } from './events/register-with-
     LoginWithPasswordCommandHandler,
     LoginWithPasswordSuccessEventHandler,
     RegisterWithPasswordSuccessEventHandler,
+    AuthSaga,
   ],
-  imports: [AuthInfraestructureModule, CqrsModule, UsersModule, AuthSaga],
+  imports: [AuthInfraestructureModule, CqrsModule, UsersModule],
   exports: [AuthService],
 })
 export class AuthModule {}
