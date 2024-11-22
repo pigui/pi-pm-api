@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Auth } from '../domain/auth';
-import { LoginWithPasswordCommand } from './login-with-password.command';
-import { RegisterWithPasswordCommand } from './register-with-password.command';
+import { LoginWithPasswordCommand } from './commands/login-with-password.command';
+import { RegisterWithPasswordCommand } from './commands/register-with-password.command';
 
 @Injectable()
 export class AuthService {

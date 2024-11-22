@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateUserWithPasswordCommand } from './create-user-with-password.command';
+import { CreateUserWithPasswordCommand } from './commands/create-user-with-password.command';
 import { User } from '../domain/user';
-import { FindUserByIdQuery } from './find-user-by-id.query';
-import { FindUserByEmailQuery } from './find-user-by-email.query';
-import { ComparePasswordQuery } from './compare-password.query';
+import { FindUserByIdQuery } from './queries/find-user-by-id.query';
+import { FindUserByEmailQuery } from './queries/find-user-by-email.query';
+import { ComparePasswordQuery } from './queries/compare-password.query';
 
 @Injectable()
 export class UsersService {

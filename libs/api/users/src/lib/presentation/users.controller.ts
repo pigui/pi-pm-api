@@ -6,7 +6,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CreateUserWithPasswordDto } from './dto/create-user-with-password.dto';
-import { CreateUserWithPasswordCommand } from '../application/create-user-with-password.command';
+import { CreateUserWithPasswordCommand } from '../application/commands/create-user-with-password.command';
 import { UserDto } from './dto/user.dto';
 
 @ApiTags('users')
