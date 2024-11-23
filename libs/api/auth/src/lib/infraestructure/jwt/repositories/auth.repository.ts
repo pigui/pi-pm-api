@@ -21,10 +21,11 @@ export class AuthRepositoryImpl implements AuthRepository {
     const refreshTokenId: string = uuid();
     return forkJoin([
       this.signToken(user.id, this.jwtConfiguration.accessTokenTtl, {
-        email: user.email,
+        user,
       }),
       this.signToken(user.id, this.jwtConfiguration.refreshTokenTtl, {
         refreshTokenId,
+        user,
       }).pipe(tap((token) => this.redisService.set(user.id, token))),
     ]).pipe(
       map(
@@ -36,6 +37,12 @@ export class AuthRepositoryImpl implements AuthRepository {
 
   refreshToken(token: string): Observable<Auth> {
     throw new Error('Method not implemented.');
+  }
+
+  verifyToken(token: string): Observable<User> {
+    return from(
+      this.jwtService.verifyAsync<User>(token, this.jwtConfiguration)
+    ).pipe(map((user) => Object.assign(User, user)));
   }
 
   private signToken<T>(

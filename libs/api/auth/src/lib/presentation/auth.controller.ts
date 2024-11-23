@@ -4,7 +4,10 @@ import { RegisterWithPasswordDto } from './dto/register-with-password.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { LoginWithPasswordDto } from './dto/login-with-password.dto';
 import { AuthDto } from './dto/auth.dto';
+import { Auth } from '../application/decorators/auth.decorator';
+import { AuthType } from '../application/enums/auth-types.enum';
 
+@Auth(AuthType.None)
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {

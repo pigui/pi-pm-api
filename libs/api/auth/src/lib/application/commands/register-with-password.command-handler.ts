@@ -11,7 +11,7 @@ import { LoginWithPasswordSuccessEvent } from '../events/login-with-password-suc
 export class RegisterWithPasswordCommandHandler
   implements ICommandHandler<RegisterWithPasswordCommand, Auth>
 {
-  private logger = new Logger(RegisterWithPasswordCommandHandler.name);
+  private readonly logger = new Logger(RegisterWithPasswordCommandHandler.name);
   constructor(
     private readonly usersService: UsersService,
     private readonly authRepository: AuthRepository,

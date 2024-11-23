@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Auth } from '../domain/auth';
 import { LoginWithPasswordCommand } from './commands/login-with-password.command';
 import { RegisterWithPasswordCommand } from './commands/register-with-password.command';
+import { VerifyTokenQuery } from './queries/verify-token.query';
+import { User } from '@api/users';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus
+  ) {}
 
   loginWithPassword(email: string, password: string): Promise<Auth> {
     return this.commandBus.execute(
@@ -23,5 +28,9 @@ export class AuthService {
     return this.commandBus.execute(
       new RegisterWithPasswordCommand(email, firstName, lastName, password)
     );
+  }
+
+  verifyToken(token: string): Promise<User> {
+    return this.queryBus.execute(new VerifyTokenQuery(token));
   }
 }
