@@ -25,6 +25,7 @@ services:
       - "6379:6379"          # Mapea el puerto 6379 al host
   redisinsight:
     image: redis/redisinsight:latest
+    restart: always
     ports:
       - "5540:5540"
     depends_on:

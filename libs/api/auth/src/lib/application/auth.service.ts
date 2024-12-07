@@ -5,6 +5,7 @@ import { LoginWithPasswordCommand } from './commands/login-with-password.command
 import { RegisterWithPasswordCommand } from './commands/register-with-password.command';
 import { VerifyTokenQuery } from './queries/verify-token.query';
 import { User } from '@api/users';
+import { RefreshTokenCommand } from './commands/refresh-token.command';
 
 @Injectable()
 export class AuthService {
@@ -28,6 +29,10 @@ export class AuthService {
     return this.commandBus.execute(
       new RegisterWithPasswordCommand(email, firstName, lastName, password)
     );
+  }
+
+  refreshToken(token: string): Promise<Auth> {
+    return this.commandBus.execute(new RefreshTokenCommand(token));
   }
 
   verifyToken(token: string): Promise<User> {

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AuthRepository } from '../../../application/ports/auth.repository';
 import { User } from '@api/users';
-import { forkJoin, from, map, Observable, tap } from 'rxjs';
+import { concatMap, forkJoin, from, map, Observable, tap } from 'rxjs';
 import { Auth } from '../../../domain/auth';
 import { JwtService } from '@nestjs/jwt';
 import { RedisService } from '@api/shared/utils/redis';
@@ -35,13 +35,13 @@ export class AuthRepositoryImpl implements AuthRepository {
     );
   }
 
-  refreshToken(token: string): Observable<Auth> {
-    throw new Error('Method not implemented.');
-  }
-
   verifyToken(token: string): Observable<User> {
     return from(
-      this.jwtService.verifyAsync<User>(token, this.jwtConfiguration)
+      this.jwtService.verifyAsync<User>(token, {
+        audience: this.jwtConfiguration.audience,
+        issuer: this.jwtConfiguration.issuer,
+        secret: this.jwtConfiguration.secret,
+      })
     ).pipe(map((user) => Object.assign(User, user)));
   }
 

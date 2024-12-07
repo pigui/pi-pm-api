@@ -13,6 +13,7 @@ import { VerifyTokenQueryHandler } from './queries/verify-token.query-handler';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from '../guards/auth.guard';
 import { AccessTokenGuard } from '../guards/access-token.guard';
+import { RefreshTokenCommandHandler } from './commands/refresh-token.command-handler';
 
 @Module({
   controllers: [AuthController],
@@ -23,6 +24,7 @@ import { AccessTokenGuard } from '../guards/access-token.guard';
     LoginWithPasswordSuccessEventHandler,
     RegisterWithPasswordSuccessEventHandler,
     VerifyTokenQueryHandler,
+    RefreshTokenCommandHandler,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,

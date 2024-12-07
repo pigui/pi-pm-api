@@ -1,9 +1,17 @@
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { LoginWithPasswordCommand } from './login-with-password.command';
 import { Auth } from '../../domain/auth';
-import { UsersService } from '@api/users';
+import { User, UsersService } from '@api/users';
 import { AuthRepository } from '../ports/auth.repository';
-import { concatMap, from, iif, lastValueFrom, tap, throwError } from 'rxjs';
+import {
+  concatMap,
+  from,
+  iif,
+  lastValueFrom,
+  Observable,
+  tap,
+  throwError,
+} from 'rxjs';
 import { Logger, UnauthorizedException } from '@nestjs/common';
 import { LoginWithPasswordSuccessEvent } from '../events/login-with-password-success.event';
 
@@ -21,8 +29,10 @@ export class LoginWithPasswordCommandHandler
     this.logger.log(
       `[${this.execute.name.toUpperCase()}] ${JSON.stringify(command)}`
     );
-    const login$ = from(this.usersService.findUserByEmail(command.email)).pipe(
-      concatMap((findUser) => {
+    const login$: Observable<Auth> = from(
+      this.usersService.findUserByEmail(command.email)
+    ).pipe(
+      concatMap((findUser: User) => {
         if (!findUser) {
           return throwError(() => new UnauthorizedException());
         }
