@@ -27,7 +27,7 @@ export class RefreshTokenCommandHandler
       `[${this.execute.name.toUpperCase()}] ${JSON.stringify(command)}`
     );
     const refreshUser$: Observable<Auth> = from(
-      this.authRepository.verifyToken(command.token)
+      this.authRepository.refreshToken(command.token)
     ).pipe(
       concatMap((userToken) => {
         return from(this.usersService.findUserById(userToken.id)).pipe(
