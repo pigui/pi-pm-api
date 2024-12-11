@@ -4,6 +4,7 @@ import {
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { CreateUserWithPasswordDto } from './dto/create-user-with-password.dto';
 import { CreateUserWithPasswordCommand } from '../application/commands/create-user-with-password.command';
@@ -16,6 +17,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @ApiConflictResponse()
+  @ApiUnauthorizedResponse()
   @ApiCreatedResponse({ type: UserDto })
   @Post('with-password')
   createUserWithPassword(

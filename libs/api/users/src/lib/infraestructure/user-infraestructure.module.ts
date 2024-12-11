@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { PrismaUserPersistenceModule } from './prisma/prisma-persistence.module';
+import { MongoUserPersistenceModule } from './mongo/prisma-persistence.module';
 
 @Module({
-  imports: [PrismaUserPersistenceModule],
-  exports: [PrismaUserPersistenceModule],
+  imports: [MongoUserPersistenceModule],
+  exports: [MongoUserPersistenceModule],
 })
 export class UserInfraestructureModule {}

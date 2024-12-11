@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from '../application/auth.service';
 import { RegisterWithPasswordDto } from './dto/register-with-password.dto';
 import {
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiTags,
@@ -19,6 +20,7 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiConflictResponse()
   @ApiUnauthorizedResponse()
   @ApiCreatedResponse({ type: AuthDto })
   @Post('register-with-password')

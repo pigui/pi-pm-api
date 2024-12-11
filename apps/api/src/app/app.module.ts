@@ -6,11 +6,13 @@ import { UsersModule } from '@api/users';
 import { AuthModule } from '@api/auth';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
+import { DatabaseModule } from '@api/shared/utils/database';
 
 @Module({
   imports: [
     CqrsModule.forRoot(),
     ConfigModule.forRoot(),
+    DatabaseModule,
     UsersModule,
     AuthModule,
   ],

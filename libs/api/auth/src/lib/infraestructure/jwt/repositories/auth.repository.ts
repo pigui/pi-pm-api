@@ -37,7 +37,7 @@ export class AuthRepositoryImpl implements AuthRepository {
         refreshTokenId,
         user,
       }).pipe(
-        concatMap((token) => {
+        concatMap((token: string) => {
           return from(this.refreshTokenIdStorage.insert(user.id, token)).pipe(
             map(() => token)
           );

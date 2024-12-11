@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../../domain/user';
-import { v4 as uuid } from 'uuid';
+import { ObjectId } from '@mikro-orm/mongodb';
 
 @Injectable()
 export class UserFactory {
@@ -11,6 +11,13 @@ export class UserFactory {
     createdAt: Date,
     updatedAt: Date
   ): User {
-    return new User(uuid(), email, firstName, lastName, createdAt, updatedAt);
+    return new User(
+      new ObjectId().toHexString(),
+      email,
+      firstName,
+      lastName,
+      createdAt,
+      updatedAt
+    );
   }
 }
