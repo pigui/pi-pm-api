@@ -7,7 +7,12 @@ import {
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
 
-@Entity()
+export enum Role {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+}
+
+@Entity({ tableName: 'users' })
 @Index({ properties: ['email'], name: 'email_unique' })
 export class UserEntity {
   @PrimaryKey()
@@ -20,7 +25,7 @@ export class UserEntity {
   email!: string;
 
   @Property({ nullable: true })
-  password!: string;
+  password?: string;
 
   @Property()
   firstName!: string;
@@ -28,9 +33,15 @@ export class UserEntity {
   @Property()
   lastName!: string;
 
-  @Property()
-  createdAt = new Date();
+  @Property({ default: false })
+  isBlocked?: boolean;
 
-  @Property({ onUpdate: () => new Date() })
-  updatedAt = new Date();
+  @Property({ default: Role.USER })
+  role?: Role;
+
+  @Property({ onCreate: () => new Date() })
+  createdAt?: Date;
+
+  @Property({ onCreate: () => new Date(), onUpdate: () => new Date() })
+  updatedAt?: Date;
 }

@@ -1,5 +1,7 @@
 import { UserEntity } from '@api/shared/utils/database';
 import { User } from '../../domain/user';
+import { UserRole } from '../../domain/value-objects/user-role';
+import { UserStatus } from '../../domain/value-objects/user-status';
 
 export class UserMapper {
   static toDomain(entity: UserEntity): User {
@@ -8,8 +10,10 @@ export class UserMapper {
       entity.email,
       entity.firstName,
       entity.lastName,
-      entity.createdAt,
-      entity.updatedAt
+      new UserRole(entity.role?.toString().toLowerCase() as 'user' | 'admin'),
+      new UserStatus(entity.isBlocked ? 'blocked' : 'active'),
+      entity.createdAt ?? new Date(),
+      entity.updatedAt ?? new Date()
     );
   }
 }

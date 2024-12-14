@@ -10,7 +10,7 @@ import { concatMap, from, map, Observable, of, throwError } from 'rxjs';
 import { HashingService } from '@api/shared/util/hashing';
 import { EntityManager, ObjectId } from '@mikro-orm/mongodb';
 import { UserMapper } from '../../mappers/user.mapper';
-import { UserEntity } from '@api/shared/utils/database';
+import { Role, UserEntity } from '@api/shared/utils/database';
 
 @Injectable()
 export class UserRepositoryImpl implements UserRepository {
@@ -36,6 +36,8 @@ export class UserRepositoryImpl implements UserRepository {
               password: hashPassword,
               firstName: user.firstName,
               lastName: user.lastName,
+              role: user.role.isAdmin() ? Role.ADMIN : Role.USER,
+              isBlocked: user.status.isBlocked(),
               createdAt: new Date(),
               updatedAt: new Date(),
             });

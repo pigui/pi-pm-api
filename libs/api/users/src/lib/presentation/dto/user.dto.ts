@@ -1,37 +1,55 @@
-import { IsDate, IsEmail, IsNotEmpty, IsString, IsUUID } from 'class-validator';
-import { User } from '../../domain/user';
+import { IsDate, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserDto extends User {
-  @ApiProperty()
-  @IsUUID('4')
+class UserRoleDto {
+  @ApiProperty({ enum: ['user', 'admin'] })
   @IsString()
   @IsNotEmpty()
-  override id!: string;
+  value!: string;
+}
+
+class UserStatusDto {
+  @ApiProperty({ enum: ['active', 'blocked'] })
+  @IsString()
+  @IsNotEmpty()
+  value!: string;
+}
+
+export class UserDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  id!: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsEmail()
   @IsString()
-  override email!: string;
+  email!: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  override firstName!: string;
+  firstName!: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  override lastName!: string;
+  lastName!: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsDate()
-  override createdAt!: Date;
+  createdAt!: Date;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsDate()
-  override updatedAt!: Date;
+  updatedAt!: Date;
+
+  @ApiProperty({ type: UserRoleDto })
+  role!: UserRoleDto;
+
+  @ApiProperty({ type: UserStatusDto })
+  status!: UserStatusDto;
 }
