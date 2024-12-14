@@ -1,9 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  Logger,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from '../../../application/ports/user.repository';
 import { User } from '../../../domain/user';
 import { concatMap, from, map, Observable, of, throwError } from 'rxjs';
@@ -72,7 +67,6 @@ export class UserRepositoryImpl implements UserRepository {
   }
   findByEmail(email: string): Observable<User | null> {
     this.logger.log(this.findByEmail.name);
-    console.log({ repo: this.repository, em: this.em });
     return from(this.repository.findOne({ email })).pipe(
       map((user: UserEntity | null) => {
         if (!user) {
