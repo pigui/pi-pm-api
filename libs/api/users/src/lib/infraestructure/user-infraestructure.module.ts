@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MongoUserPersistenceModule } from './mongo/prisma-persistence.module';
+import { MongoUserPersistenceModule } from './mongo/mongo-persistence.module';
 
 @Module({
   imports: [MongoUserPersistenceModule],
