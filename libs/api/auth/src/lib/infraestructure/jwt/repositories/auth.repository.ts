@@ -1,19 +1,9 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthRepository } from '../../../application/ports/auth.repository';
 import { User } from '@api/users';
-import {
-  concatMap,
-  forkJoin,
-  from,
-  map,
-  Observable,
-  of,
-  tap,
-  throwError,
-} from 'rxjs';
+import { concatMap, forkJoin, from, map, Observable, throwError } from 'rxjs';
 import { Auth } from '../../../domain/auth';
 import { JwtService } from '@nestjs/jwt';
-import { RedisService } from '@api/shared/utils/redis';
 import { v4 as uuid } from 'uuid';
 import jwtConfig from '../config/jwt.config';
 import { ConfigType } from '@nestjs/config';

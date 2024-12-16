@@ -17,9 +17,9 @@
     "baseUrl": ".",
     "paths": {
       "@api/auth": ["libs/api/auth/src/index.ts"],
-      "@api/shared/util/hashing": ["libs/shared/utils/hashing/src/index.ts"],
-      "@api/shared/utils/database": ["libs/shared/utils/database/src/index.ts"],
-      "@api/shared/utils/redis": ["libs/shared/utils/redis/src/index.ts"],
+      "@api/shared/util/database": ["libs/shared/util/database/src/index.ts"],
+      "@api/shared/util/hashing": ["libs/shared/util/hashing/src/index.ts"],
+      "@api/shared/util/redis": ["libs/shared/util/redis/src/index.ts"],
       "@api/users": ["libs/api/users/src/index.ts"]
     }
   },

@@ -6,7 +6,7 @@ import { UsersModule } from '@api/users';
 import { AuthModule } from '@api/auth';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
-import { DatabaseModule } from '@api/shared/utils/database';
+import { DatabaseModule } from '@api/shared/util/database';
 
 @Module({
   imports: [
