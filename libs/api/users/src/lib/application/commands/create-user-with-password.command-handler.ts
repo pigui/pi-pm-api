@@ -1,11 +1,15 @@
-import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
+import {
+  CommandHandler,
+  EventBus,
+  EventPublisher,
+  ICommandHandler,
+} from '@nestjs/cqrs';
 import { User } from '../../domain/user';
 import { UserFactory } from '../factories/user.factory';
 import { UserRepository } from '../ports/user.repository';
 import { lastValueFrom, Observable, tap } from 'rxjs';
 import { Logger } from '@nestjs/common';
 import { CreateUserWithPasswordCommand } from './create-user-with-password.command';
-import { UserCreatedEvent } from '../events/user-created.event';
 
 @CommandHandler(CreateUserWithPasswordCommand)
 export class CreateUserWithPasswordCommandHandler
@@ -17,7 +21,7 @@ export class CreateUserWithPasswordCommandHandler
   constructor(
     private readonly userFactory: UserFactory,
     private readonly userRepository: UserRepository,
-    private readonly eventBus: EventBus
+    private readonly eventPublisher: EventPublisher
   ) {}
   execute(command: CreateUserWithPasswordCommand): Promise<User> {
     this.logger.log(
@@ -30,11 +34,16 @@ export class CreateUserWithPasswordCommandHandler
       new Date(),
       new Date()
     );
+
     const user$: Observable<User> = this.userRepository
       .createWithPassword(newUser, command.password)
       .pipe(
-        tap((user: User) => this.eventBus.publish(new UserCreatedEvent(user)))
+        tap((user: User) => {
+          this.eventPublisher.mergeObjectContext(user);
+          user.commit();
+        })
       );
+
     return lastValueFrom(user$);
   }
 }

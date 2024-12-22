@@ -1,4 +1,4 @@
-import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { LoginWithPasswordCommand } from './login-with-password.command';
 import { Auth } from '../../domain/auth';
 import { User, UsersService } from '@api/users';
@@ -13,7 +13,6 @@ import {
   throwError,
 } from 'rxjs';
 import { Logger, UnauthorizedException } from '@nestjs/common';
-import { LoginWithPasswordSuccessEvent } from '../events/login-with-password-success.event';
 
 @CommandHandler(LoginWithPasswordCommand)
 export class LoginWithPasswordCommandHandler
@@ -23,7 +22,7 @@ export class LoginWithPasswordCommandHandler
   constructor(
     private readonly usersService: UsersService,
     private readonly authRepository: AuthRepository,
-    private readonly eventBus: EventBus
+    private readonly eventPublisher: EventPublisher
   ) {}
   execute(command: LoginWithPasswordCommand): Promise<Auth> {
     this.logger.log(
@@ -42,15 +41,13 @@ export class LoginWithPasswordCommandHandler
           concatMap((comparePassword: boolean) =>
             iif(
               () => comparePassword,
-              this.authRepository
-                .login(findUser)
-                .pipe(
-                  tap((logged: Auth) =>
-                    this.eventBus.publish(
-                      new LoginWithPasswordSuccessEvent(logged?.user)
-                    )
-                  )
-                ),
+              this.authRepository.login(findUser).pipe(
+                tap((logged: Auth) => {
+                  const { user } = logged;
+                  this.eventPublisher.mergeObjectContext(user);
+                  user.commit();
+                })
+              ),
               throwError(() => new UnauthorizedException())
             )
           )
