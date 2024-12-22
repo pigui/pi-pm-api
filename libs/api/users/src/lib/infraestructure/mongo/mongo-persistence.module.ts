@@ -13,4 +13,4 @@ import { HashingModule } from '@api/shared/util/hashing';
   imports: [HashingModule],
   exports: [UserRepository],
 })
-export class MongoUserPersistenceModule {}
+export class MongoUsersPersistenceModule {}

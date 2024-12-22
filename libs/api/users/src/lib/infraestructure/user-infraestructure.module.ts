@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { MongoUserPersistenceModule } from './mongo/mongo-persistence.module';
+import { MongoUsersPersistenceModule } from './mongo/mongo-persistence.module';
 
 @Module({
-  imports: [MongoUserPersistenceModule],
-  exports: [MongoUserPersistenceModule],
+  imports: [MongoUsersPersistenceModule],
+  exports: [MongoUsersPersistenceModule],
 })
-export class UserInfraestructureModule {}
+export class UsersInfraestructureModule {}

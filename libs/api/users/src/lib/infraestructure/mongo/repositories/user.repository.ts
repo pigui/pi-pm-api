@@ -4,7 +4,7 @@ import { User } from '../../../domain/user';
 import { concatMap, from, map, Observable, of, throwError } from 'rxjs';
 import { HashingService } from '@api/shared/util/hashing';
 import { EntityManager, ObjectId } from '@mikro-orm/mongodb';
-import { UserMapper } from '../../mappers/user.mapper';
+import { UserMapper } from '../mappers/user.mapper';
 import { Role, UserEntity } from '@api/shared/util/database';
 
 @Injectable()

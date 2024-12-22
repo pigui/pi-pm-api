@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@api/auth": ["libs/api/auth/src/index.ts"],
+      "@api/projects": ["libs/api/projects/src/index.ts"],
       "@api/shared/util/database": ["libs/shared/util/database/src/index.ts"],
       "@api/shared/util/hashing": ["libs/shared/util/hashing/src/index.ts"],
       "@api/shared/util/redis": ["libs/shared/util/redis/src/index.ts"],

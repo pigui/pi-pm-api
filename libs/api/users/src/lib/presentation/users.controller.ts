@@ -25,9 +25,9 @@ export class UsersController {
   ) {
     this.logger.log(this.createUserWithPassword.name);
     return this.usersService.createUserWithPassword(
-      createUserWithPasswordDto.email,
-      createUserWithPasswordDto.firstName,
-      createUserWithPasswordDto.lastName,
+      createUserWithPasswordDto.email.toLowerCase(),
+      createUserWithPasswordDto.firstName.toLowerCase(),
+      createUserWithPasswordDto.lastName.toLowerCase(),
       createUserWithPasswordDto.password
     );
   }

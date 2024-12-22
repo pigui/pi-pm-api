@@ -3,6 +3,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { MongoDriver } from '@mikro-orm/mongodb';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserEntity } from './entities/user';
+import { ProjectEntity } from './entities/project';
 
 @Global()
 @Module({
@@ -15,7 +16,7 @@ import { UserEntity } from './entities/user';
         clientUrl: configService.get<string>('DATABASE_URL'),
         dbName: configService.get<string>('DATABASE_NAME'),
         ensureIndexes: true,
-        entities: [UserEntity],
+        entities: [UserEntity, ProjectEntity],
       }),
       imports: [ConfigModule],
     }),

@@ -28,9 +28,9 @@ export class AuthController {
     @Body() registerWithPasswordDto: RegisterWithPasswordDto
   ) {
     return this.authService.registerWithPassword(
-      registerWithPasswordDto.email,
-      registerWithPasswordDto.firstName,
-      registerWithPasswordDto.lastName,
+      registerWithPasswordDto.email.toLowerCase(),
+      registerWithPasswordDto.firstName.toLowerCase(),
+      registerWithPasswordDto.lastName.toLowerCase(),
       registerWithPasswordDto.password
     );
   }
@@ -40,7 +40,7 @@ export class AuthController {
   @Post('login-with-password')
   loginWithPassword(@Body() loginWithPasswordDto: LoginWithPasswordDto) {
     return this.authService.loginWithPassword(
-      loginWithPasswordDto.email,
+      loginWithPasswordDto.email.toLowerCase(),
       loginWithPasswordDto.password
     );
   }

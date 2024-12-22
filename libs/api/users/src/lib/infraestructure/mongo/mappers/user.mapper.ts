@@ -1,7 +1,7 @@
 import { UserEntity } from '@api/shared/util/database';
-import { User } from '../../domain/user';
-import { UserRole } from '../../domain/value-objects/user-role';
-import { UserStatus } from '../../domain/value-objects/user-status';
+import { User } from '../../../domain/user';
+import { UserRole } from '../../../domain/value-objects/user-role';
+import { UserStatus } from '../../../domain/value-objects/user-status';
 
 export class UserMapper {
   static toDomain(entity: UserEntity): User {
