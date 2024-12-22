@@ -3,6 +3,7 @@ import { User } from '../../domain/user';
 import { ObjectId } from '@mikro-orm/mongodb';
 import { UserRole } from '../../domain/value-objects/user-role';
 import { UserStatus } from '../../domain/value-objects/user-status';
+import { UserCreatedEvent } from '../events/user-created.event';
 
 @Injectable()
 export class UserFactory {
@@ -13,15 +14,15 @@ export class UserFactory {
     createdAt: Date,
     updatedAt: Date
   ): User {
-    return new User(
-      new ObjectId().toHexString(),
-      email,
-      firstName,
-      lastName,
-      new UserRole('user'),
-      new UserStatus('active'),
-      createdAt,
-      updatedAt
-    );
+    const user = new User(new ObjectId().toHexString());
+    user.email = email;
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.role = new UserRole('user');
+    user.status = new UserStatus('active');
+    user.createdAt = createdAt;
+    user.updatedAt = updatedAt;
+    user.apply(new UserCreatedEvent(user), { skipHandler: true });
+    return user;
   }
 }
