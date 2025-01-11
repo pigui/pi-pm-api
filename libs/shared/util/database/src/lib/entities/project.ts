@@ -6,7 +6,7 @@ import {
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
 
-enum ProjectStatus {
+export enum ProjectStatus {
   INITIAL = 'INITIAL',
   CANCELED = 'CANCELED',
   BLOCKED = 'BLOCKED',
@@ -24,7 +24,7 @@ export class ProjectEntity {
   name!: string;
 
   @Property()
-  ownerId!: ObjectId;
+  owner!: ObjectId;
 
   @Property()
   users!: Array<ObjectId>;

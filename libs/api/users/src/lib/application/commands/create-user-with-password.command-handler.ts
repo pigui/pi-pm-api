@@ -6,10 +6,10 @@ import {
 } from '@nestjs/cqrs';
 import { User } from '../../domain/user';
 import { UserFactory } from '../factories/user.factory';
-import { UserRepository } from '../ports/user.repository';
 import { lastValueFrom, Observable, tap } from 'rxjs';
 import { Logger } from '@nestjs/common';
 import { CreateUserWithPasswordCommand } from './create-user-with-password.command';
+import { CreateUserWithPasswordRepository } from '../ports/create-user-with-password.repository';
 
 @CommandHandler(CreateUserWithPasswordCommand)
 export class CreateUserWithPasswordCommandHandler
@@ -20,7 +20,7 @@ export class CreateUserWithPasswordCommandHandler
   );
   constructor(
     private readonly userFactory: UserFactory,
-    private readonly userRepository: UserRepository,
+    private readonly createUserWithPasswordRepository: CreateUserWithPasswordRepository,
     private readonly eventPublisher: EventPublisher
   ) {}
   execute(command: CreateUserWithPasswordCommand): Promise<User> {
@@ -35,7 +35,7 @@ export class CreateUserWithPasswordCommandHandler
       new Date()
     );
 
-    const user$: Observable<User> = this.userRepository
+    const user$: Observable<User> = this.createUserWithPasswordRepository
       .createWithPassword(newUser, command.password)
       .pipe(
         tap((user: User) => {

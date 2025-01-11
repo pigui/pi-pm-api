@@ -1,15 +1,24 @@
 import { ConflictException, Injectable, Logger } from '@nestjs/common';
-import { UserRepository } from '../../../application/ports/user.repository';
 import { User } from '../../../domain/user';
 import { concatMap, from, map, Observable, of, throwError } from 'rxjs';
 import { HashingService } from '@api/shared/util/hashing';
 import { EntityManager, ObjectId } from '@mikro-orm/mongodb';
 import { UserMapper } from '../mappers/user.mapper';
 import { Role, UserEntity } from '@api/shared/util/database';
+import { CreateUserWithPasswordRepository } from '../../../application/ports/create-user-with-password.repository';
+import { ComparePasswordRepository } from '../../../application/ports/compare-password.repository';
+import { FindUserByEmailRepository } from '../../../application/ports/find-user-by-email.repository';
+import { FindUserByIdRepository } from '../../../application/ports/find-user-by-id.repository';
 
 @Injectable()
-export class UserRepositoryImpl implements UserRepository {
-  private readonly logger = new Logger(UserRepository.name);
+export class UserRepositoryImpl
+  implements
+    CreateUserWithPasswordRepository,
+    ComparePasswordRepository,
+    FindUserByEmailRepository,
+    FindUserByIdRepository
+{
+  private readonly logger = new Logger(UserRepositoryImpl.name);
   private readonly repository = this.em.getRepository(UserEntity);
   constructor(
     private readonly hashingService: HashingService,

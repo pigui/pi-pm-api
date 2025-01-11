@@ -7,6 +7,7 @@ import { AuthModule } from '@api/auth';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from '@api/shared/util/database';
+import { ProjectsModule } from '@api/projects';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { DatabaseModule } from '@api/shared/util/database';
     DatabaseModule,
     UsersModule,
     AuthModule,
+    ProjectsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

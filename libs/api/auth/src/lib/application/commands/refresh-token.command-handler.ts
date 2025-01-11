@@ -2,8 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { RefreshTokenCommand } from './refresh-token.command';
 import { Auth } from '../../domain/auth';
 import { Logger, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from '@api/users';
-import { AuthRepository } from '../ports/auth.repository';
+import { User, UsersService } from '@api/users';
 import {
   catchError,
   concatMap,
@@ -12,6 +11,8 @@ import {
   Observable,
   throwError,
 } from 'rxjs';
+import { RefreshTokenRepository } from '../ports/refresh-token.repository';
+import { LoginRepository } from '../ports/login.repository';
 
 @CommandHandler(RefreshTokenCommand)
 export class RefreshTokenCommandHandler
@@ -20,23 +21,24 @@ export class RefreshTokenCommandHandler
   private readonly logger = new Logger(RefreshTokenCommandHandler.name);
   constructor(
     private readonly usersService: UsersService,
-    private readonly authRepository: AuthRepository
+    private readonly refreshTokenRepository: RefreshTokenRepository,
+    private readonly loginRepository: LoginRepository
   ) {}
   execute(command: RefreshTokenCommand): Promise<Auth> {
     this.logger.log(
       `[${this.execute.name.toUpperCase()}] ${JSON.stringify(command)}`
     );
-    const refreshUser$: Observable<Auth> = from(
-      this.authRepository.refreshToken(command.token)
+    const refreshToken$: Observable<Auth> = from(
+      this.refreshTokenRepository.refreshTokens(command.token)
     ).pipe(
-      concatMap((userToken) => {
+      concatMap((userToken: User) => {
         return from(this.usersService.findUserById(userToken.id)).pipe(
-          concatMap((user) => from(this.authRepository.login(user)))
+          concatMap((user: User) => this.loginRepository.login(user))
         );
       }),
       catchError(() => throwError(() => new UnauthorizedException()))
     );
 
-    return lastValueFrom(refreshUser$);
+    return lastValueFrom(refreshToken$);
   }
 }

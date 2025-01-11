@@ -3,9 +3,9 @@ import { RegisterWithPasswordCommand } from './register-with-password.command';
 import { Auth } from '../../domain/auth';
 import { User, UsersService } from '@api/users';
 import { concatMap, from, lastValueFrom, Observable, tap } from 'rxjs';
-import { AuthRepository } from '../ports/auth.repository';
 import { Logger } from '@nestjs/common';
 import { LoginWithPasswordSuccessEvent } from '../events/login-with-password-success.event';
+import { LoginRepository } from '../ports/login.repository';
 
 @CommandHandler(RegisterWithPasswordCommand)
 export class RegisterWithPasswordCommandHandler
@@ -14,7 +14,7 @@ export class RegisterWithPasswordCommandHandler
   private readonly logger = new Logger(RegisterWithPasswordCommandHandler.name);
   constructor(
     private readonly usersService: UsersService,
-    private readonly authRepository: AuthRepository,
+    private readonly loginRepository: LoginRepository,
     private readonly eventBus: EventBus
   ) {}
   execute(command: RegisterWithPasswordCommand): Promise<Auth> {
@@ -30,7 +30,7 @@ export class RegisterWithPasswordCommandHandler
       )
     ).pipe(
       concatMap((userCreated: User) => {
-        return this.authRepository
+        return this.loginRepository
           .login(userCreated)
           .pipe(
             tap((logged: Auth) =>

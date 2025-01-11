@@ -1,4 +1,11 @@
-import { IsDate, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsEmail,
+  IsMongoId,
+  IsNotEmpty,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 class UserRoleDto {
@@ -19,6 +26,7 @@ export class UserDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
+  @IsMongoId()
   id!: string;
 
   @ApiProperty()
@@ -48,8 +56,10 @@ export class UserDto {
   updatedAt!: Date;
 
   @ApiProperty({ type: UserRoleDto })
+  @ValidateNested()
   role!: UserRoleDto;
 
   @ApiProperty({ type: UserStatusDto })
+  @ValidateNested()
   status!: UserStatusDto;
 }

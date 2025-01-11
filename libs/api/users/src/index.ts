@@ -6,3 +6,5 @@ export * from './lib/presentation/dto/create-user-with-password.dto';
 export * from './lib/presentation/dto/user.dto';
 
 export * from './lib/domain/user';
+export * from './lib/domain/value-objects/user-role';
+export * from './lib/domain/value-objects/user-status';

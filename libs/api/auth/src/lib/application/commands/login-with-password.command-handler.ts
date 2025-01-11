@@ -2,7 +2,6 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { LoginWithPasswordCommand } from './login-with-password.command';
 import { Auth } from '../../domain/auth';
 import { User, UsersService } from '@api/users';
-import { AuthRepository } from '../ports/auth.repository';
 import {
   concatMap,
   from,
@@ -13,6 +12,7 @@ import {
   throwError,
 } from 'rxjs';
 import { Logger, UnauthorizedException } from '@nestjs/common';
+import { LoginRepository } from '../ports/login.repository';
 
 @CommandHandler(LoginWithPasswordCommand)
 export class LoginWithPasswordCommandHandler
@@ -21,7 +21,7 @@ export class LoginWithPasswordCommandHandler
   private readonly logger = new Logger(LoginWithPasswordCommandHandler.name);
   constructor(
     private readonly usersService: UsersService,
-    private readonly authRepository: AuthRepository,
+    private readonly loginRepository: LoginRepository,
     private readonly eventPublisher: EventPublisher
   ) {}
   execute(command: LoginWithPasswordCommand): Promise<Auth> {
@@ -41,7 +41,7 @@ export class LoginWithPasswordCommandHandler
           concatMap((comparePassword: boolean) =>
             iif(
               () => comparePassword,
-              this.authRepository.login(findUser).pipe(
+              this.loginRepository.login(findUser).pipe(
                 tap((logged: Auth) => {
                   const { user } = logged;
                   this.eventPublisher.mergeObjectContext(user);
